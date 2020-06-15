@@ -7,6 +7,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func main() {
@@ -15,14 +17,53 @@ func main() {
 	mongoClient := getClient(viper.GetString("mongo.uri"))
 	err := mongoClient.Ping(context.TODO(), nil)
 
-	collection := mongoClient.Database("test").Collection("test")
+	collection := mongoClient.Database(viper.GetString("mongo.db")).Collection(viper.GetString("mongo.collection"))
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	r := gin.Default()
-	r.GET("/user/:name", func(c *gin.Context) {
+
+	r.GET("/user/list", func(c *gin.Context) {
+
+		findOptions := options.Find()
+		//findOptions.SetLimit(2)
+
+		// Here's an array in which you can store the decoded documents
+		var results []*Trainer
+
+		// Passing bson.D{{}} as the filter matches all documents in the collection
+		cur, err := collection.Find(context.TODO(), bson.D{{}}, findOptions)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Finding multiple documents returns a cursor
+		// Iterating through the cursor allows us to decode documents one at a time
+		for cur.Next(context.TODO()) {
+
+			// create a value into which the single document can be decoded
+			var elem Trainer
+			err := cur.Decode(&elem)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			results = append(results, &elem)
+		}
+
+		if err := cur.Err(); err != nil {
+			log.Fatal(err)
+		}
+
+		// Close the cursor once finished
+		cur.Close(context.TODO())
+
+		c.JSON(http.StatusOK, results)
+	})
+
+	r.POST("/user/add/:name", func(c *gin.Context) {
 		name := c.Param("name")
 
 		insertResult, err := collection.InsertOne(context.TODO(), Trainer{name, 10, "Pallet Town"})
