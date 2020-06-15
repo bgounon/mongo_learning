@@ -1,8 +1,8 @@
 $(document).ready(function() {
-    $.getJSON( "https://mongolearn.lesondesbros.eu/user/list", function( data ) {
+    $.getJSON( url + "/users", function( data ) {
 
         $.each(data, function(i, element){
-            $(".users-list").append('<li>' + element.Name + '</li>');
+            $(".users-list").append('<li>' + element.Name + ":" + element.Id + '</li>');
         })
 
     });

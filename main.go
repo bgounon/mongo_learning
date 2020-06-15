@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -27,7 +28,7 @@ func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
 
-	r.GET("/user/list", func(c *gin.Context) {
+	r.GET("/users", func(c *gin.Context) {
 
 		findOptions := options.Find()
 		//findOptions.SetLimit(2)
@@ -65,10 +66,10 @@ func main() {
 		c.JSON(http.StatusOK, results)
 	})
 
-	r.POST("/user/add/:name", func(c *gin.Context) {
+	r.POST("/user/:name", func(c *gin.Context) {
 		name := c.Param("name")
 
-		insertResult, err := collection.InsertOne(context.TODO(), Trainer{name, 10, "Pallet Town"})
+		insertResult, err := collection.InsertOne(context.TODO(), Trainer{"", name, "10", "Pallet Town"})
 		if err != nil {
 			log.Print(err)
 		}
@@ -76,9 +77,25 @@ func main() {
 		c.String(http.StatusOK, "Inserted a single document for %s: %s", name, insertResult.InsertedID)
 	})
 
-	r.GET("/user/info/:name", func(c *gin.Context) {
-		name := c.Param("name")
-		filter := bson.D{{"name", name}}
+	r.PUT("/user/:id/:attribute/:value", func(c *gin.Context) {
+
+		id, _ := primitive.ObjectIDFromHex(c.Param("id"))
+		filter := bson.M{"_id": id}
+		attribute := c.Param("attribute")
+		value := c.Param("value")
+		update := bson.D{{
+			"$set", bson.M{attribute: value},
+		},
+		}
+
+		collection.UpdateOne(context.TODO(), filter, update)
+
+		c.String(http.StatusOK, "")
+	})
+
+	r.GET("/user/:id", func(c *gin.Context) {
+		id, _ := primitive.ObjectIDFromHex(c.Param("id"))
+		filter := bson.M{"_id": id}
 
 		var result Trainer
 

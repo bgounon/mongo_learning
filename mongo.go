@@ -10,8 +10,9 @@ import (
 
 // You will be using this Trainer type later in the program
 type Trainer struct {
+	Id   string "_id"
 	Name string
-	Age  int
+	Age  string
 	City string
 }
 

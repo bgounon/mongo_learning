@@ -3,9 +3,9 @@ $(document).ready(function (){
 
         event.preventDefault(); 
         $(".user-info").empty();
-        var name = $( "#username" ).val();
+        var name = $( "#mongoid" ).val();
 
-        $.getJSON( "https://mongolearn.lesondesbros.eu/user/info/" + name, function( data ) {
+        $.getJSON( url + "/user/" + name, function( data ) {
 
             $.each(data, function(key, value){
                 $(".user-info").append('<li>' + key + " : " + value + '</li>');
