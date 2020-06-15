@@ -4,11 +4,24 @@
         <title>Learning MongoDB ...</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script src="userlist.js"></script>
+        <script src="userinfo.js"></script>
     </head>
 
     <body>
         <div>
             <ul class="users-list"></ul>
+        </div>
+        <div>
+            <form id="myForm" name="myForm">
+                <div>
+                    <label for="username">Enter name:</label>
+                    <input type="text" id="username" name="username">
+                </div>
+                <input type="submit" value="Submit!">
+            </form>
+        </div>
+        <div>
+            <ul class="user-info"></ul>
         </div>
     </body>
 </html>
