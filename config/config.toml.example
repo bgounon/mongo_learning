@@ -1,0 +1,4 @@
+[mongo]
+uri = "mongodb://user:password@example.com:27017"
+
+
