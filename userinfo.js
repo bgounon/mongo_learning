@@ -2,9 +2,9 @@ $(document).ready(function (){
     $( "#idRequest" ).submit(function (event) {
 
         event.preventDefault(); 
-        var name = $( "#mongoid" ).val();
+        var id = $( "#mongoid" ).val();
 
-        $.getJSON( url + "/user/" + name, function( data ) {
+        $.getJSON( url + "/user/" + id, function( data ) {
 
             $( "#name" ).val(data.Name)
             $( "#age" ).val(data.Age)

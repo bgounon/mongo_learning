@@ -73,9 +73,24 @@ func main() {
 		_, err := collection.InsertOne(context.TODO(), Trainer{Id: id, Name: name, Age: "10", City: "Pallet Town"})
 		if err != nil {
 			log.Print(err)
+		} else {
+			c.String(http.StatusOK, "%s", id.Hex())
 		}
 
-		c.String(http.StatusOK, "%s", id.Hex())
+	})
+
+	r.DELETE("/user/:id", func(c *gin.Context) {
+		id, _ := primitive.ObjectIDFromHex(c.Param("id"))
+		filter := bson.M{"_id": id}
+
+		var result Trainer
+
+		_, err = collection.DeleteOne(context.TODO(), filter)
+		if err != nil {
+			log.Print(err)
+		} else {
+			c.JSON(http.StatusOK, result)
+		}
 	})
 
 	r.PUT("/user/:id/:attribute/:value", func(c *gin.Context) {
@@ -89,9 +104,12 @@ func main() {
 		},
 		}
 
-		collection.UpdateOne(context.TODO(), filter, update)
-
-		c.String(http.StatusOK, "")
+		_, err = collection.UpdateOne(context.TODO(), filter, update)
+		if err != nil {
+			log.Print(err)
+		} else {
+			c.String(http.StatusOK, "")
+		}
 	})
 
 	r.GET("/user/:id", func(c *gin.Context) {
