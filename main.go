@@ -36,7 +36,7 @@ func main() {
 		// Passing bson.D{{}} as the filter matches all documents in the collection
 		cur, err := collection.Find(context.TODO(), bson.D{{}}, findOptions)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 		}
 
 		// Finding multiple documents returns a cursor
@@ -47,14 +47,14 @@ func main() {
 			var elem Trainer
 			err := cur.Decode(&elem)
 			if err != nil {
-				log.Fatal(err)
+				log.Print(err)
 			}
 
 			results = append(results, &elem)
 		}
 
 		if err := cur.Err(); err != nil {
-			log.Fatal(err)
+			log.Print(err)
 		}
 
 		// Close the cursor once finished
@@ -68,10 +68,24 @@ func main() {
 
 		insertResult, err := collection.InsertOne(context.TODO(), Trainer{name, 10, "Pallet Town"})
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
 		}
 
 		c.String(http.StatusOK, "Inserted a single document for %s: %s", name, insertResult.InsertedID)
+	})
+
+	r.GET("/user/info/:name", func(c *gin.Context) {
+		name := c.Param("name")
+		filter := bson.D{{"name", name}}
+
+		var result Trainer
+
+		err = collection.FindOne(context.TODO(), filter).Decode(&result)
+		if err != nil {
+			log.Print(err)
+		} else {
+			c.JSON(http.StatusOK, result)
+		}
 	})
 
 	r.Run()
