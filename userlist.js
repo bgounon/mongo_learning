@@ -1,9 +1,13 @@
 $(document).ready(function() {
-    $.ajax({
-        dataType: "json",
-        url: "https://mongolearn.lesondesbros.eu/user/info/testos"
-    }).then(function(data) {
-       $('.greeting-id').append(data.name);
-       $('.greeting-content').append(data.City);
-    });
-});
+    $.getJSON( "https://mongolearn.lesondesbros.eu/user/info/testos", function( data ) {
+        var items = [];
+        $.each( data, function( key, val ) {
+          items.push( "<li id='" + key + "'>" + val + "</li>" );
+        });
+       
+        $( "<ul/>", {
+          "class": "my-new-list",
+          html: items.join( "" )
+        }).appendTo( "body" );
+      });
+ });
