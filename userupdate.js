@@ -19,6 +19,9 @@ $(document).ready(function (){
             url: url + "/user/" + id + "/city/" + city,
             type: 'PUT'
         });
+
+        loadList();
+
     });
 });
 
