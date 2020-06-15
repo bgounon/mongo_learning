@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $.getJSON( "https://mongolearn.lesondesbros.eu/user/info/testos", function( data ) {
+    $.getJSON( "https://mongolearn.lesondesbros.eu/user/list", function( data ) {
         var items = [];
         $.each( data, function( key, val ) {
           items.push( "<li id='" + key + "'>" + val + "</li>" );
