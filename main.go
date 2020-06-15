@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson"
@@ -24,6 +25,7 @@ func main() {
 	}
 
 	r := gin.Default()
+	r.Use(cors.Default())
 
 	r.GET("/user/list", func(c *gin.Context) {
 
