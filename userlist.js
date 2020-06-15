@@ -1,4 +1,8 @@
-$(document).ready(function() {
+$(document).ready(loadList());
+
+
+ function loadList() {
+    $( ".users-list" ).empty();
     $.getJSON( url + "/users", function( data ) {
 
         $.each(data, function(i, element){
@@ -6,4 +10,4 @@ $(document).ready(function() {
         })
 
     });
- });
+ }

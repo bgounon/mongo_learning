@@ -68,13 +68,14 @@ func main() {
 
 	r.POST("/user/:name", func(c *gin.Context) {
 		name := c.Param("name")
+		id := primitive.NewObjectID()
 
-		insertResult, err := collection.InsertOne(context.TODO(), Trainer{"", name, "10", "Pallet Town"})
+		_, err := collection.InsertOne(context.TODO(), Trainer{Id: id, Name: name, Age: "10", City: "Pallet Town"})
 		if err != nil {
 			log.Print(err)
 		}
 
-		c.String(http.StatusOK, "Inserted a single document for %s: %s", name, insertResult.InsertedID)
+		c.String(http.StatusOK, "%s", id.Hex())
 	})
 
 	r.PUT("/user/:id/:attribute/:value", func(c *gin.Context) {

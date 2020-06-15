@@ -4,13 +4,15 @@ import (
 	"context"
 	"log"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // You will be using this Trainer type later in the program
 type Trainer struct {
-	Id   string "_id"
+	Id   primitive.ObjectID "_id"
 	Name string
 	Age  string
 	City string
