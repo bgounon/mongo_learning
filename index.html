@@ -6,6 +6,7 @@
         <script src="config.js"></script>
         <script src="userlist.js"></script>
         <script src="userinfo.js"></script>
+        <script src="userupdate.js"></script>
     </head>
 
     <body>
@@ -13,16 +14,27 @@
             <ul class="users-list"></ul>
         </div>
         <div>
-            <form id="myForm" name="myForm">
+            <form id="idRequest" name="idRequest">
                 <div>
-                    <label for="username">Enter id:</label>
+                    <label for="mongoid">Enter id:</label>
                     <input type="text" id="mongoid" name="mongoid">
                 </div>
-                <input type="submit" value="Submit!">
+                <input type="submit" value="Refresh!">
             </form>
         </div>
+
         <div>
-            <ul class="user-info"></ul>
+            <form id="userUpdate" name="userUpdate">
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name">
+                    <label for="age">Age:</label>
+                    <input type="text" id="age" name="age">
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city">
+                </div>
+                <input type="submit" value="Update!">
+            </form>
         </div>
     </body>
 </html>
